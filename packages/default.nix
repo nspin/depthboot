@@ -10,4 +10,8 @@ rec {
     inherit mk_kpart;
   };
 
+  midboot = callPackage ./midboot {
+    inherit mk_kpart;
+  };
+
 }

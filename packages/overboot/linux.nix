@@ -30,7 +30,16 @@ let
 
   # base with only rockchip platform
   base-rockchip = ./config;
+  # base with only rockchip platform and NET=n
+  base-rockchip-nonet = ./nonet.config;
+  # base with only rockchip platform and fewer drivers
+  base-rockchip-less = ./less.config;
+  # base with only rockchip platform and fewer drivers and even less
+  base-rockchip-even-less = ./even-less.config;
 
+  # config = base-rockchip-less;
+  # config = base-rockchip-nonet;
+  # config = base-rockchip-even-less;
   config = base-rockchip;
 
   # {
@@ -56,6 +65,6 @@ in doKernel rec {
   passthru = {
     inherit env;
     inherit common;
-    inherit base;
+    # inherit base;
   };
 }

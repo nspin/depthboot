@@ -1,10 +1,10 @@
-{ writeText, runCommand
+{ writeText, runCommand, lib
 , kernel-lz4, initrd, dtbs
 }:
 
 let
 
-  head = writeText "x" ''
+  head = writeText "x" (''
     /dts-v1/;
 
     / {
@@ -17,9 +17,10 @@ let
                 arch = "arm64";
                 os = "linux";
                 compression = "lz4";
-                load = <0>;
-                entry = <0>;
+                load = <0x00200000>;
+                entry = <0x00200000>;
             };
+  '' + lib.optionalString (initrd != null) ''
             ramdisk@1 {
                 description = "ramdisk";
                 data = /incbin/("${initrd}");
@@ -31,7 +32,7 @@ let
                     algo = "sha1";
                 };
             };
-  '';
+  '');
 
   mid = writeText "x" ''
         };
@@ -45,7 +46,7 @@ let
   '';
 
 in
-runCommand "its" {} ''
+runCommand "its" {} (''
   dtb_files=($(find -L ${dtbs} -type f -name '*.dtb'))
 
   fdt_definition() {
@@ -72,7 +73,9 @@ runCommand "its" {} ''
           conf@''${idx}{
               kernel = "kernel@1";
               fdt = "fdt@''${idx}";
+'' + lib.optionalString (initrd != null) ''
               ramdisk = "ramdisk@1";
+'' + ''
           };
   EOF
   }
@@ -90,4 +93,4 @@ runCommand "its" {} ''
   done
 
   cat ${tail} >> $out
-''
+'')
