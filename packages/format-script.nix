@@ -1,7 +1,7 @@
-{ writeScript, runtimeShell, utillinux, vboot_reference }:
+{ lib, writeScript, runtimeShell, utillinux, vboot_reference }:
 
 { swapSize ? null
-}
+}:
 
 let
   diskUUID = "A8ABB0FA-2FD7-4FB8-ABB0-2EEB7CD66AFA";

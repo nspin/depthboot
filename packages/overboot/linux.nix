@@ -17,17 +17,45 @@ let
     inherit source;
   });
 
-  allconfig = (mergeConfig [
-    defconfig
-    (commonConfig { inherit (source) version; })
-  ]);
+  common = nixosCommonConfig { inherit (source) version; };
 
-  config = makeConfig {
+  base = makeConfig {
     inherit source;
-    allconfig = writeConfig allconfig;
+    target = "alldefconfig";
+    allconfig = writeConfig (mergeConfig [
+      defconfig
+      common
+    ]);
+  };
+
+  # base with only rockchip platform
+  base-rockchip = ./config;
+
+  config = base-rockchip;
+
+  # {
+  #   DRM_ROCKCHIP = "y";
+  #   DRM_ANALOGIX_DP = "y";
+  #   ROCKCHIP_DW_HDMI = "y";
+  #   DRM_DW_MIPI_DSI = "y";
+  #   DRM_KMS_HELPER = "y";
+  #   PWM_CROS_EC = "y";
+  #   DRM_PANEL_SIMPLE = "y";
+  #   BACKLIGHT_PWM = "y";
+  #   DRM = "y";
+  # }
+
+  env = configEnv {
+    inherit source config;
   };
 
 in doKernel rec {
   inherit source config;
   dtbs = true;
+  nukeRefs = false;
+  passthru = {
+    inherit env;
+    inherit common;
+    inherit base;
+  };
 }
