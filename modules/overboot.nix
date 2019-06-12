@@ -25,7 +25,7 @@ let
     dd if="${overbootKpart}" of="${cfg.partition}"
   '';
 
-  overbootKpart = pkgs.overboot.kpart;
+  overbootKpart = pkgs.depthboot.overboot.kpart;
 
 in {
 

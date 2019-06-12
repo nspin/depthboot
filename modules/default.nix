@@ -4,6 +4,6 @@
     ./underboot.nix
   ];
   nixpkgs.overlays = [
-    (import ../overlay)
+    (import ../overlay.nix)
   ];
 }
