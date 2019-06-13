@@ -11,12 +11,9 @@ with lib;
 let
   cfg = config.boot.loader.underboot;
 
-  kernelPath = "${config.boot.kernelPackages.kernel}/${config.system.boot.loader.kernelFile}";
-  initrdPath = "${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}";
-
   kpart = pkgs.depthboot.mk_kpart {
-    kernel = kernelPath;
-    initrd = initrdPath;
+    kernel = cfg.kernelPath;
+    initrd = cfg.initrdPath;
     dtbs = cfg.dtbs;
     kernelParams = config.boot.kernelParams ++ [ "init=/boot/underboot/init" ];
   };
@@ -39,6 +36,14 @@ in {
 
     boot.loader.underboot.dtbs = mkOption {
       default = config.boot.kernelPackages.kernel;
+    };
+
+    boot.loader.underboot.kernelPath = mkOption {
+      default = "${config.boot.kernelPackages.kernel}/${config.system.boot.loader.kernelFile}";
+    };
+
+    boot.loader.underboot.initrdPath = mkOption {
+      default = "${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}";
     };
 
   };
