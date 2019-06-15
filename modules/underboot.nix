@@ -12,9 +12,9 @@ let
   cfg = config.boot.loader.underboot;
 
   kpart = pkgs.depthboot.mk_kpart {
-    kernel = cfg.kernelPath;
-    initrd = cfg.initrdPath;
-    dtbs = cfg.dtbs;
+    kernel = config.system.boot.loader.kernelPath;
+    initrd = config.system.boot.loader.initrdPath;
+    dtbs = config.system.boot.loader.dtbsPath;
     kernelParams = config.boot.kernelParams ++ [ "init=/boot/underboot/init" ];
   };
 
@@ -34,16 +34,9 @@ in {
       '';
     };
 
-    boot.loader.underboot.dtbs = mkOption {
-      default = config.boot.kernelPackages.kernel;
-    };
-
-    boot.loader.underboot.kernelPath = mkOption {
-      default = "${config.boot.kernelPackages.kernel}/${config.system.boot.loader.kernelFile}";
-    };
-
-    boot.loader.underboot.initrdPath = mkOption {
-      default = "${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}";
+    # TODO
+    boot.loader.underboot.dtb = mkOption {
+      type = types.string;
     };
 
   };
