@@ -46,7 +46,7 @@ in {
     system.boot.loader.id = "underboot";
 
     system.extraSystemBuilderCmds = ''
-      ln -s ${config.system.build.kpart} $out/kpart
+      ln -s ${config.system.build.kpart} $out/underboot-kpart
     '';
 
     system.build = {
@@ -74,11 +74,11 @@ in {
           cur="$(expr "$prev" + 1)"
         fi
 
-        kpart="$(readlink $system/kpart)"
+        kpart="$(readlink $system/underboot-kpart)"
         stat $kpart > /dev/null
 
         if [ -n "$prev" ]; then
-          kpart_prev="$(readlink $systems/$prev/kpart)"
+          kpart_prev="$(readlink $systems/$prev/underboot-kpart)"
           stat $kpart_prev > /dev/null
         else
           kpart_prev=

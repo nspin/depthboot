@@ -5,7 +5,7 @@
 
 rec {
 
-  linux = callPackage ./linux.nix {};
+  linux = callPackage ./linux {};
 
   initrd = callPackage ./initrd.nix {} {
     modules = linux.mod;
