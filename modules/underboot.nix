@@ -14,7 +14,7 @@ let
   kpart = pkgs.depthboot.mk_kpart {
     kernel = config.system.boot.loader.kernelPath;
     initrd = config.system.boot.loader.initrdPath;
-    dtbs = config.system.boot.loader.dtbsPath;
+    dtbs = config.hardware.deviceTree.package;
     kernelParams = config.boot.kernelParams ++ [ "init=/boot/underboot/init" ];
   };
 
